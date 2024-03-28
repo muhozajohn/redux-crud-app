@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar/Navbar';
+import Tutorial from './components/Tutorial';
+import TutorialsList from './components/TutorialsList';
+import AddTutorial from './components/AddTutorial';
+import { useSelector, useDispatch } from 'react-redux';
+import { getThemeColor, changeColor } from './features/theme/themeSlice';
 
-function App() {
+const App = () => {
+
+  const dispatch = useDispatch();
+  const bgLight = useSelector(getThemeColor)
+  const handleBgColr = (curbg) => {
+    return curbg ? " bg-white " : "dark:bg-slate-800 dark:text-white"
+  }
+
+  const handlebgChange = (bg) => {
+    dispatch(changeColor(bg));
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={`${handleBgColr(bgLight)}`}>
+      <Navbar changeBg={handlebgChange} />
+      <div className={` flex flex-col justify-center min-h-screen container w-full px-5 md:px-0 md:w-4/5 mx-auto `}>
+        <Routes>
+          <Route path="/" element={<Tutorial card="card" data={handleBgColr(bgLight)} />} />
+          <Route path="/Tutorials/:id"  element={<Tutorial data1="data1"/>} />
+          <Route path="/TutorialList" element={< TutorialsList />} />
+          <Route path="/AddTutorial" element={<AddTutorial />} />
+        </Routes>
+      </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
