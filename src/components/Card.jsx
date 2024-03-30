@@ -1,5 +1,5 @@
 import { FaRegEdit } from "react-icons/fa";
-const Card = ({ styles }) => {
+const Card = ({ styles , title , description }) => {
   return (
     <div
       className={` ${styles}  rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl`}
@@ -10,11 +10,10 @@ const Card = ({ styles }) => {
         </span>
       </div>
       <h3 className="mt-5 text-base font-medium tracking-tight">
-        Writes Upside-Down
+      {title}
       </h3>
       <p className="text-slate-500 dark:text-slate-400 mt-2 text-sm">
-        The Zero Gravity Pen can be used to write in any orientation, including
-        upside-down. It even works in outer space.
+      {description}
       </p>
     </div>
   );
