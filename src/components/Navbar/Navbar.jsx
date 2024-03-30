@@ -19,10 +19,7 @@ const Navbar = ({ changeBg }) => {
           <Link to="/">Tutorials Card</Link>
         </li>
         <li>
-          <Link to="/Tutorials/:id">Tutorials</Link>
-        </li>
-        <li>
-          <Link to="/TutorialList">Tutorials List</Link>
+          <Link to="/Tutorials">Tutorials</Link>
         </li>
         <li>
           <Link to="/AddTutorial">AddTutorial</Link>
