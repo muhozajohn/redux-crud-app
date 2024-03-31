@@ -15,10 +15,7 @@ const Navbar = ({ changeBg }) => {
   return (
     <nav className=" flex items-center p-6 gap-3 text-white justify-between dark:bg-slate-700  fixed left-0 top-0 w-full">
       <ul className="flex items-center gap-4 ">
-        <li>
-          <Link to="/">Tutorials Card</Link>
-        </li>
-        <li>
+             <li>
           <Link to="/Tutorials">Tutorials</Link>
         </li>
         <li>
