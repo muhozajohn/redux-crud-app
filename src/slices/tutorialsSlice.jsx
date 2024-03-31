@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import tutorialService from "../services/tutorial.service"
+import tutorialService from "../services/tutorial.service";
 
 const initialState = {
   tutorials: [],
@@ -27,30 +27,37 @@ export const retrieveTutorials = createAsyncThunk(
 
 export const updateTutorial = createAsyncThunk(
   "tutorials/update",
-  async ({ id, data }) => {
-    const response = await tutorialService.update({
-      id,
-      data,
-    });
-    return response.data;
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      const response = await tutorialService.update(id, data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
 export const deleteTutorial = createAsyncThunk(
   "tutorials/delete",
-  async ({ id }) => {
-    await tutorialService.delete({
-      id,
-    });
-    return { id };
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      await tutorialService.delete(id);
+      return { id };
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
 export const getOnetutorials = createAsyncThunk(
   "tutorials/getOne",
-  async (id) => {
-    const res = await tutorialService.get(id);
-    return res.data;
+  async ({ id }, { rejectWithValue }) => {
+    try {
+      const res = await tutorialService.get(id);
+      return res.data?.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -71,6 +78,9 @@ const tutorialSlice = createSlice({
         state.tutorials.push(action.payload);
       })
       .addCase(retrieveTutorials.fulfilled, (state, action) => {
+        state.tutorials = action.payload;
+      })
+      .addCase(getOnetutorials.fulfilled, (state, action) => {
         state.tutorials = action.payload;
       })
       .addCase(findTutorialsByTitle.fulfilled, (state, action) => {
