@@ -4,16 +4,25 @@ import tutorialService from "../services/tutorial.service";
 const initialState = {
   tutorials: [],
 };
+const token = localStorage.getItem("token");
+
 
 export const createTutorial = createAsyncThunk(
   "tutorials/create",
-  async ({ title, description, image }) => {
-    const response = await tutorialService.create({
-      title,
-      description,
-      image,
-    });
-    return response.data?.data;
+  async ({ title, description, image }, { rejectWithValue }) => {
+    try {
+      const response = await tutorialService.create(
+        {
+          title,
+          description,
+          image,
+        },
+        token
+      );
+      return response.data?.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -29,7 +38,7 @@ export const updateTutorial = createAsyncThunk(
   "tutorials/update",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await tutorialService.update(id, data);
+      const response = await tutorialService.update(id, data, token);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -39,9 +48,9 @@ export const updateTutorial = createAsyncThunk(
 
 export const deleteTutorial = createAsyncThunk(
   "tutorials/delete",
-  async ({ id }, { rejectWithValue }) => {
+  async ({ id, token }, { rejectWithValue }) => {
     try {
-      await tutorialService.delete(id);
+      await tutorialService.delete(id, token);
       return { id };
     } catch (error) {
       return rejectWithValue(error.response.data);

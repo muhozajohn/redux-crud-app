@@ -2,11 +2,10 @@ import Button from "./Button";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import { useState } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import HashLoader from "react-spinners/HashLoader";
 import { IoMdClose } from "react-icons/io";
-const Modal = ({ close, data, updateTutorial }) => {
+const Modal = ({ close, data, updateTutorial ,retrieveTutorials }) => {
   const dispatch = useDispatch();
-
   const [loading, setLoading] = useState(false);
 
   const UpDate = async () => {
@@ -17,11 +16,14 @@ const Modal = ({ close, data, updateTutorial }) => {
           description: formik.values.description,
           // image: formik.values.image,
         };
-        console.log("formData", formData);
         setLoading(true);
-        dispatch(updateTutorial({ id: data._id, formData }));
+        dispatch(updateTutorial({ id: data._id, data: formData }))
+        .then(() => {
+          close();
+          dispatch(retrieveTutorials());
+        });
         setLoading(false);
-        // close();
+
       }
     } catch (error) {
       setLoading(false);
@@ -77,19 +79,18 @@ const Modal = ({ close, data, updateTutorial }) => {
               rows="5"
             ></textarea>
           </div>
-          {loading ? (
-            <Button
-              icon={<AiOutlineLoading3Quarters />}
-              styles={`scale-100`}
-              click={() => formik.submitForm()}
-            />
-          ) : (
-            <Button
-              title="Update"
-              styles={`scale-100`}
-              click={() => formik.submitForm()}
-            />
-          )}
+          <button
+            onClick={() => formik.submitForm()}
+            disabled={loading}
+            type="button"
+            className={`border border-green-700 text-green-700  px-6 py-3 rounded-full flex justify-center items-center gap-2 text-base hover:bg-green-700 hover:text-white duration-150 hover:scale-105 active:scale-100`}
+          >
+            {loading ? (
+              <HashLoader size={15} color={"#008000"} loading={loading} />
+            ) : (
+              "Update"
+            )}
+          </button>
         </form>
       </div>
     </div>

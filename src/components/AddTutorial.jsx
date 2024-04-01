@@ -20,7 +20,6 @@ const AddTutorial = () => {
           description: formik.values.description,
           // image: formik.values.image,
         };
-        console.log("formData", formData);
         setLoading(true);
         dispatch(createTutorial(formData));
         formik.resetForm();

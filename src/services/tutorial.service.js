@@ -9,16 +9,29 @@ class TutorialDataService {
     return http.get(`/read/${id}`);
   }
 
-  create(data) {
-    return http.post("/create", data);
+  create(data, token) {
+    return http.post("/create", data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   }
 
-  update(id, data) {
-    return http.put(`/update/${id}`, data);
+
+  update(id, data, token) {
+    return http.put(`/update/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   }
 
-  delete(id) {
-    return http.delete(`/delete/${id}`);
+  delete(id, token) {
+    return http.delete(`/delete/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   }
 
   deleteAll() {
